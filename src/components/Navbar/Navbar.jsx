@@ -8,7 +8,7 @@ const Navbar = (props) => {
 
           {/* Logo */}
           <div className="flex-1">
-            <p className='ml-2 text-2xl font-semibold'>Proucts</p>
+            <p className='ml-2 text-2xl font-semibold'> Proucts </p>
           </div>
 
           {/* Cart Items Icon */}
