@@ -1,6 +1,16 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Navbar = (props) => {
+
+  // UIseNavigate
+  const navigate = useNavigate()
+
+  // Navigate To Cart
+  const navigateToCart = () => {
+    navigate('/cart')
+  }
+
   return (
     <>
       <div className='mt-5 px-5'>
@@ -25,7 +35,7 @@ const Navbar = (props) => {
                   <span className="font-bold text-lg">{props.items} Items</span>
                   <span className="text-info">{props.subtotal}</span>
                   <div className="card-actions">
-                    <button className="btn btn-primary btn-block">View cart</button>
+                    <button onClick={navigateToCart} className="btn btn-primary btn-block">View cart</button>
                   </div>
                 </div>
               </div>

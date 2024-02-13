@@ -1,17 +1,13 @@
 import React from 'react'
-import Navbar from './components/Navbar/Navbar'
-import ProductCard from './components/productCard/ProductCard'
-import SingleProductDetails from './components/singleProductDetails/SingleProductDetails'
+import RouterConfig from './config/redux/router/RouterConfig'
+
 
 const App = () => {
+
   return (
     <>
-      <Navbar />
-      <ProductCard />
-      <SingleProductDetails />
+      <RouterConfig />
     </>
-
-
   )
 }
 

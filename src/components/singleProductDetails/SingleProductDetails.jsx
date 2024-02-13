@@ -1,18 +1,111 @@
 import React from 'react'
+import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCart } from '../../config/redux/reducers/cartSlice'
+import Swal from 'sweetalert2'
 
-const SingleProductDetails = () => {
+
+const SingleProductDetails = ({ image, title, description, price, id }) => {
+
+  // UseSelector
+  const selector = useSelector(state => state.cartItems.cartItems)
+
+  // UseDispatch
+  const dispatch = useDispatch()
+
+
+  // Adding Product In Redux Cart
+  const productAddToCart = () => {
+
+    axios.get(`https://fakestoreapi.com/products/${id}`)
+      .then((res) => {
+
+        if (selector.length === 0) {
+
+          // Product Addedd to Redux cart
+          dispatch(addToCart({
+            title: res.data.title,
+            price: res.data.price,
+            description: res.data.description,
+            image: res.data.image,
+            id: res.data.id
+          }))
+
+          // Sweet Alert
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Product Added to Cart",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+        else {
+          let productAlreadyExist = false
+
+          // Checking Product Exist in Cart or Not
+          selector.map((item) => {
+
+            if (item.id === res.data.id) {
+              productAlreadyExist = true
+            }
+          })
+
+          if (productAlreadyExist) {
+
+            // Sweet Alert
+            Swal.fire({
+              position: "top-end",
+              icon: "error",
+              title: "Product Already in Cart",
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+          else {
+
+            // Product Addedd to Redux
+            dispatch(addToCart({
+              title: res.data.title,
+              price: res.data.price,
+              description: res.data.description,
+              image: res.data.image,
+              id: res.data.id
+            }))
+
+            // Sweet Alert
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Product Added to Cart",
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+
+        }
+
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+
   return (
     <>
+      {/* Product Details Card */}
       <div className='flex justify-center my-10'>
         <div className="card card-side w-[80%] rounded-xl bg-base-200 shadow-xl">
           <div className='w-[30%]'>
-            <figure><img src="https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg" alt="Movie" /></figure>
+            <figure><img src={image} alt="Movie" /></figure>
           </div>
           <div className="card-body w-[70%]">
-            <h2 className="card-title">New movie is released!</h2>
-            <p>Click the button to watch on Jetflix app. Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet sunt voluptates facere atque voluptatum. Ullam laudantium, quae suscipit quas est ipsum voluptates tempore consectetur eius quod pariatur delectus quaerat temporibus voluptate, perspiciatis, eveniet magnam corporis velit ratione recusandae autem necessitatibus! Laborum consectetur est obcaecati qui necessitatibus nam incidunt blanditiis dolor vero molestias eligendi similique voluptatem, delectus molestiae non ut veniam, dicta commodi voluptatibus eaque. Eveniet quasi inventore itaque consequuntur fugiat ducimus porro quisquam tempora, veniam voluptatem molestiae autem? Error et tenetur nulla, assumenda aliquid perspiciatis sequi molestias cumque veritatis distinctio quis obcaecati, neque iste perferendis suscipit sit quia. Iste, ea.</p>
+            <h2 className="card-title"> {title} </h2>
+            <h4 className="card-title"> ${price} </h4>
+            <p> {description} </p>
             <div className="card-actions justify-end">
-              <button className="btn btn-primary"> Add to Cart </button>
+              <button className="btn btn-primary" onClick={productAddToCart} > Add to Cart </button>
             </div>
           </div>
         </div>
